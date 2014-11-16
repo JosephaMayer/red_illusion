@@ -1,10 +1,16 @@
+<!doctype html>
+<html lang="en">
+    <head>
+	<meta charset="utf-8">
+	<title>Red Optical Illusion</title>
+	
 <img id="image" src="land.jpg">
 
 
 <script src="glfx.js"></script>
-
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-
+<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
 
 <script>
 $(document).ready(function () {
@@ -16,12 +22,29 @@ $(document).ready(function () {
     }
 
     var image = document.getElementById('image');
-    console.log(image);
     var texture = canvas.texture(image);
 
-    canvas.draw(texture).hueSaturation(0, -1).update();
     image.parentNode.insertBefore(canvas, image);
     image.parentNode.removeChild(image);
+    canvas.draw(texture).hueSaturation(0, 0).update();
+
+    $( "#slider" ).slider({
+	orientation:"horizontal",
+	value:100,
+	slide: function( event, ui ) {
+	    canvas.draw(texture).hueSaturation(0, (ui.value-80)/100).update();
+	}	
+    });
+
 });
 
+
+
 </script>
+ </head>
+ <body>
+     <div style="width:400px;">
+	 <div id="slider"></div>
+     </div>
+ </body>
+</html>
