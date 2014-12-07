@@ -3,45 +3,48 @@
     <head>
 	<meta charset="utf-8">
 	<title>Red Optical Illusion</title>
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
-	<script src="./pixastic.core.js"></script>
-	<script src="./pixastic.jquery.js"></script>
-	<img id="id" src="land.jpg" alt="Obstkorb" />
-
-	<script>
-	 function desaturate(rweight, gweight, bweight) {
-	     //normalize the color weights
-	     var scale = 1 / (rweight + gweight + bweight);
-	     rweight *= scale;
-	     gweight *= scale;
-	     bweight *= scale;
-
-	     each_pixel(image_data, function(r, g, b) {
-		 var brightness = r * rweight + g * gweight + b * bweight;
-
-		 //replace the r, g, and b values of the pixel with "brightness"
-		 return [brightness, brightness, brightness];
-	     });
-	 }
+	
+<img id="image" src="land.jpg">
 
 
-	 $(document).ready(function () {
-             $( "#slider" ).slider({
-		 orientation:"vertical",
-		 value:100,
-		 slide: function( event, ui ) {
-                     desaturate(ui.value, 0, 0)
-		 }	
-             });
+<script src="glfx.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    try {
+        var canvas = fx.canvas();
+    } catch (e) {
+        alert(e);
+        return;
+    }
+
+    var image = document.getElementById('image');
+    var texture = canvas.texture(image);
+
+    image.parentNode.insertBefore(canvas, image);
+    image.parentNode.removeChild(image);
+    canvas.draw(texture).hueSaturation(0, 0).update();
+
+    $( "#slider" ).slider({
+	orientation:"horizontal",
+	value:100,
+	slide: function( event, ui ) {
+	    canvas.draw(texture).hueSaturation(0, (ui.value-80)/100).update();
+	}	
+    });
+
+});
 
 
-	 });
 
-	</script>
-    </head>
-    <body>
-	<div id="slider"></div>
-    </body>
+</script>
+ </head>
+ <body>
+     <div style="width:400px;">
+	 <div id="slider"></div>
+     </div>
+ </body>
 </html>
