@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+    <head>
+	<meta charset="utf-8">
+	<title>Red Optical Illusion</title>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+	<script src="./pixastic.core.js"></script>
+	<script src="./pixastic.jquery.js"></script>
+	<img id="id" src="land.jpg" alt="Obstkorb" />
+
+	<script>
+	 function desaturate(rweight, gweight, bweight) {
+	     //normalize the color weights
+	     var scale = 1 / (rweight + gweight + bweight);
+	     rweight *= scale;
+	     gweight *= scale;
+	     bweight *= scale;
+
+	     each_pixel(image_data, function(r, g, b) {
+		 var brightness = r * rweight + g * gweight + b * bweight;
+
+		 //replace the r, g, and b values of the pixel with "brightness"
+		 return [brightness, brightness, brightness];
+	     });
+	 }
+
+
+	 $(document).ready(function () {
+             $( "#slider" ).slider({
+		 orientation:"vertical",
+		 value:100,
+		 slide: function( event, ui ) {
+                     desaturate(ui.value, 0, 0)
+		 }	
+             });
+
+
+	 });
+
+	</script>
+    </head>
+    <body>
+	<div id="slider"></div>
+    </body>
+</html>
